@@ -1,0 +1,7 @@
+page84.cxx -> objecs/ pointers / array / queue
+same-> page91 -> array 10d 
+page120-> refrence variable
+page123 -> replace pointer with playerxyz and compeuterxyz in tttgame 
+page143 -> assign namespace to another not wokkiowefgjoi
+page143 -> namign type i cant undrestand
+page144 -> test scope move the variable with namespace
