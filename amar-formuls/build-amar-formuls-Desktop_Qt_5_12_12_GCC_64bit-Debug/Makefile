@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../amar-formuls/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../amar-formuls/main.cpp \
+		../amar-formuls/second.cpp 
+OBJECTS       = main.o \
+		second.o
 DIST          = /home/name/Qt/5.12.12/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/common/unix.conf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/common/linux.conf \
@@ -207,6 +209,7 @@ DIST          = /home/name/Qt/5.12.12/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/qt_config.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/spec_post.prf \
+		../amar-formuls/.qmake.stash \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/toolchain.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/default_pre.prf \
@@ -220,7 +223,8 @@ DIST          = /home/name/Qt/5.12.12/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/exceptions.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/yacc.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/lex.prf \
-		../amar-formuls/amar-formuls.pro  ../amar-formuls/main.cpp
+		../amar-formuls/amar-formuls.pro  ../amar-formuls/main.cpp \
+		../amar-formuls/second.cpp
 QMAKE_TARGET  = amar-formuls
 DESTDIR       = 
 TARGET        = amar-formuls
@@ -385,6 +389,7 @@ Makefile: ../amar-formuls/amar-formuls.pro /home/name/Qt/5.12.12/gcc_64/mkspecs/
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/qt_config.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/toolchain.prf \
 		/home/name/Qt/5.12.12/gcc_64/mkspecs/features/default_pre.prf \
@@ -553,6 +558,7 @@ Makefile: ../amar-formuls/amar-formuls.pro /home/name/Qt/5.12.12/gcc_64/mkspecs/
 /home/name/Qt/5.12.12/gcc_64/mkspecs/features/qt_config.prf:
 /home/name/Qt/5.12.12/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/name/Qt/5.12.12/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/name/Qt/5.12.12/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/name/Qt/5.12.12/gcc_64/mkspecs/features/toolchain.prf:
 /home/name/Qt/5.12.12/gcc_64/mkspecs/features/default_pre.prf:
@@ -612,6 +618,9 @@ compiler_clean:
 
 main.o: ../amar-formuls/main.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../amar-formuls/main.cpp
+
+second.o: ../amar-formuls/second.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o second.o ../amar-formuls/second.cpp
 
 ####### Install
 

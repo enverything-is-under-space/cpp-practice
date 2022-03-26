@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 
 using std::cout;
 using std::cin;
@@ -11,15 +10,15 @@ class amar
 {
 
 public:
-    float data[maxar];
-    float x[maxar], f[maxar], r[maxar], g[maxar];
-
+    float data[maxar+1];
+    float x[maxar+1], f[maxar+1], r[maxar+1], g[maxar+1];
 
 
     //global functions
         void getinput();
         int N();
         void printdata(float*);
+        void copyarray(float*,float*); //copy second to first values
 
         //sort data
         void swap(float *xp, float *yp);
@@ -27,11 +26,13 @@ public:
 
 
 
-        void Xi(); // remove duplicated data from array
+        void Xi(float*); // remove duplicated data from array
 //        int Fi();
 //        void r();
 //        void g();
 };
+
+
 
 void amar::getinput()
 {
@@ -62,7 +63,9 @@ void amar::printdata(float *ar)
 {
     cout << "\t----------------- array values -----------------" << endl;
     for(int j=0;j<=maxar;j++)
+    {
         cout << ar[j] << "\t";
+    }
 
     cout << endl;
 }
@@ -73,10 +76,47 @@ int amar::N()
 
 
 
-void amar::Xi()
+void amar::Xi(float*a)
 {
-
+    for(int k=0;k<=maxar;k++)
+    {
+        cout<<"xi=" << a[k] << endl;
+    }
 }
+
+void amar::copyarray(float *a, float *b)
+{
+    for(int k=0;k<=maxar;k++)
+        a[k] = b[k];
+}
+
+
+void cal(float*a)
+{
+    int i,j,k,n;
+    n= maxar+1; //array len
+
+    for(i=0;i<n-1;i++)
+    {
+        for(j=i+1;j<n;)
+        {
+            if(a[i]==a[j])
+            {
+                for(k=j;k<n-1;k++)
+                {
+                    cout << "\t" << k << endl;
+                    a[k]=a[k+1];
+
+                }
+                n--;
+            }
+            else
+                j++;
+        }
+    }
+}
+
+
 
 int main()
 {
@@ -89,7 +129,15 @@ int main()
     obj.bubbleSort(obj.data,maxar);
     obj.printdata(obj.data);
 
+    obj.copyarray(obj.x,obj.data);
+    obj.Xi(obj.x);
 
-
+    cout << endl << endl;
+    cal(obj.x);
+        obj.printdata(obj.data);
+            obj.printdata(obj.x);
     return 0;
 }
+
+
+
