@@ -9,8 +9,9 @@ using std::cout;
 using std::endl;
 using std::queue;
 using std::setprecision;
+using std::round;
 
-const int dataCount=5; //count of data for input and calculate
+const int dataCount=30; //count of data for input and calculate
 
 class amar
 {
@@ -48,7 +49,6 @@ class amar
 
 
 
-
         //-------------- section 2 --------------
         void printTableClass(queue<float>,queue<float>,queue<float>,queue<float>,queue<float>);
         float R(queue<float>); //R = (formul : biggest data - smallest data)
@@ -59,7 +59,9 @@ class amar
         void fi2(queue<float>,float); //Fi section2 (formul: count data == x && data < y) y=karan UP, x=karan DOWN AND fi2 have to  use data.front[means minumum number] till classLevel front
         void classLevel(queue<float>,float); // 2x 2x numbers saved for exmaple: 2.0-2.4 , next class is 2.4-2.8 and ...
         void classAgent(queue<float>);
-        float mAvrage(queue<float>); // avrage = (formul : n[j] =  x[j] * f[j]  'then  plus all n indexes insert into ave'  ave = n[j->n.size]  -> ave / N
+
+        //section 2 part 2
+//        float mAvrage(queue<float>); // avrage = (formul : n[j] =  x[j] * f[j]  'then  plus all n indexes insert into ave'  ave = n[j->n.size]  -> ave / N
 //        float mode(float
 //        float miane();
 //        float charak();
@@ -69,14 +71,13 @@ class amar
 
 };
 
-//section 1
-void amar::gi(queue<float>tempF,queue<float>x)
+void amar::gi(queue<float>f,queue<float>x)
 {
     int len = x.size();
     for(int i=0; i<= len-1; i++)
     {
         float temp=0;
-//        queue<float> tempF = f;
+        queue<float> tempF = f; //bcz value will be pop. needed to refill
 
         for(int j=0; j<= i; j++)
         {
@@ -125,7 +126,7 @@ void amar::fi()
         temp = tempQ.front();
         tempQ.pop();
         counter++;
-        if(temp == tempQ.front())
+        //if(temp == tempQ.front())
             while(temp == tempQ.front())
             {
                 counter++;
@@ -163,6 +164,7 @@ void amar::sortQueue(queue<float>a)
 }
 void amar::sBubbleSort(float arr[], int n)
 {
+
     int i, j;
     for (i = 0; i < n; i++)
         for (j = 0; j < n-i; j++)
@@ -174,12 +176,10 @@ void amar::sBubbleSort(float arr[], int n)
     cleanQueue(data);
     for(j=1;j<n+1;j++)
         data.push(arr[j]);
-
-
 }
 void amar::sSwap(float *xp, float *yp)
 {
-    int temp = *xp;
+    float temp = *xp;
     *xp = *yp;
     *yp = temp;
 }
@@ -268,18 +268,72 @@ float amar::R(queue<float>data)
     return max-min;
 }
 float amar::L(float R, float K)
-{
+{    
+    cout << "R=" << R << "\t K= " << K << endl;
+    //-------------------------------------------------------------------------------------------- PROBLEM CLASS IS HERE
+
+
+
+
+                //CLASS  IS NOT WORKING CORRECT BECUZ OF L is not rounded correct
+        /
+
+
+
+
+            //F is not working correct bcz of L AND SOMETHING I DONT KNOW RIGHT NOW
+
+
+    // AGENT IS NOT WORKING CORRECT BCZ of I DONT KNOW RIGHT NOW
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //-------------------------------------------------------------------=
+//    cout << "L = " << (R/K) << endl;
+//    cout << "LLL= " << round(2.2 / 6) << endl;
+//    cout << "LLL= " << floor(2.2 / 6+0.5) << endl;
+//    cout << "LLL= " << ceil(2.2 / 6+0.5) << endl;
+//    cout << "LLL= " << std::roundf(2.2 / 6) << endl;
+//    cout << "LLL= " << std::lroundf(2.2 / 6) << endl;
+//    cout << "LLL= " << std::llroundf(2.2 / 6) << endl;
+//    float L = R/K;
+//    L = 0.4;
+
+
+    //NOTE BUG HELP NEEEDED TO (round the float point like 0.37 -> 0.4 to closest posible number)
     return R/K;
 }
 int amar::K()
 {
-    int k = ceil(1 + 3.32 * log10(ni()));
-    cout << "NOTE - - - K without ceil value = " << (1 + 3.32 * log10(ni())) << endl;
-    return k;
+    return round(1 + 3.32 * log10(ni()));
 }
 void amar::section1(amar o)
 {
-    o.giveInput();
+    //o.giveInput();
+    float arr[30] = {5,4,2,1,1,1,3,3,3,2,0,5,0,2,2,2,2,4,4,1,0,1,1,3,2,5,2,1,0,4};
+    for(int te=0;te<=30-1;te++)
+        o.data.push(arr[te]);
+
     o.sortQueue(o.data);
     o.xi(o.data);
     o.fi();
@@ -307,29 +361,28 @@ void amar::classLevel(queue<float>data, float L)
     float temp=0;
     float karanDown = 0;
     float karanUp = 0;
+    temp = data.front();
+
     for(int i=0; i<=dataCount-1; i++)
     {
-        temp = data.front();
 
         karanDown = temp;
         karanUp = karanDown + L;
 
-        data.pop();
-        if(temp >= karanDown && temp < karanUp)
-            while(temp >= karanDown && temp < karanUp)
-            {
-                data.pop();
-            }
-
+        while(temp >= karanDown && temp < karanUp) //NOTE BUG (needed to only 2 float number not more something like setpreciosion)
+        {
+             data.pop();
+             temp = data.front();
+        }
         classLevels.push(karanDown);
         classLevels.push(karanUp);
-        if(temp == data.back())
+        temp = classLevels.back();
+        if(data.empty())
             break;
     }
 }
 void amar::fi2(queue<float>data,float L)
 {
-    cout << "=== fi2 begun\n";
     int counter=0;
     float temp=0;
     float karanDown = 0;
@@ -341,21 +394,16 @@ void amar::fi2(queue<float>data,float L)
         karanDown = temp;
         karanUp = karanDown + L;
 
-        cout << "i=" << i << "\tdatacount=" << dataCount-1 << "\tkaranDown=" << karanDown << "\tkaranUp=" << karanUp << "\tL=" << L << endl;
+        while(temp >= karanDown && temp < karanUp) //NOTE BUG (needed to only 2 float number not more something like setpreciosion)
+        {
+             counter++;
+             data.pop();
+             temp = data.front();
+        }
 
-//        data.pop();
-//        counter++;
-        if(temp >= karanDown && temp < karanUp)
-            while(temp >= karanDown && temp < karanUp)
-            {----------------
-                counter++;
-                data.pop();
-            }
-
-        cout <<"===before push to f, counter =" << counter << endl;
         f.push(counter);
         counter=0;
-        if(temp == data.back())
+        if(data.empty())
             break;
     }
 }
@@ -383,43 +431,41 @@ void amar::printTableClass(queue<float>classLevels,queue<float>f,queue<float>r,q
         classAgents.pop();
     }
 }
-
 void amar::section2(amar o)
 {
-    cout << "input\n";
-    o.giveInput();
-    cout << "sort\n";
+//    o.giveInput();
+    float arr[30] =
+    {2.0,2.1,2.3,3.0,3.1,2.7,
+     2.8,3.5,3.1,3.7,3.1,2.6,
+     3.5,4.0,2.3,3.5,4.2,3.7,
+     3.2,2.7,2.5,2.7,3.8,3.0,
+     2.8,2.9,4.1,3.2,2.8,2.2};
+
+    for(int te=0;te<=30-1;te++)
+        o.data.push(arr[te]);
+
+
+
     o.sortQueue(o.data);
-    cout << "L=\n";
+
+    o.printQueue(o.data);
+
     float L = o.L(o.R(o.data),o.K()); //space between classes
-    cout << "fi2\n";
-
-
-
-
-
-
+    o.classLevel(o.data,L);
     o.fi2(o.data,L);
-    cout << "ri\n";
+    for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
+        o.x.push(0);
     o.ri(o.f);
-
-    cout << "push to x\n";
-    for(int i=1; i<=o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
-        x.push(0);
-
-    cout << "gi\n";
     o.gi(o.f,o.x);
-    cout << "classagent\n";
     o.classAgent(o.classLevels);
-
-    cout << "print\n\n\n\n\n";
     o.printTableClass(o.classLevels, o.f, o.r, o.g, o.classAgents);
 }
 int main()
 {
     amar o;
-    //o.section1(o);
+//    o.section1(o);
     o.section2(o);
+
 
     return 0;
 }
