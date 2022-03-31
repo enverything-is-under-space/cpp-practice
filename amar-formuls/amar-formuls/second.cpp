@@ -57,6 +57,7 @@ class amar
 
 
         void fi2(queue<float>,queue<float>); //Fi section2 (formul: count data == x && data < y) y=karan UP, x=karan DOWN AND fi2 have to  use data.front[means minumum number] till classLevel front
+        void fi22(queue<float>,queue<float>);
         void classLevel(queue<float>,float); // 2x 2x numbers saved for exmaple: 2.0-2.4 , next class is 2.4-2.8 and ...
         void classAgent(queue<float>);
         float floatPointRounder(float);
@@ -307,15 +308,16 @@ void amar::classAgent(queue<float>classLevels)
 {
     float karanDown=0;
     float karanUp =0;
-    for(int i=0; i<= (int)classLevels.size()-1 ; i++)
+    int len = (int)classLevels.size();
+    cleanQueue(classAgents);
+    for(int i=1; i<=  len; i++)
     {
         karanDown = classLevels.front();
         classLevels.pop();
 
         karanUp = classLevels.front();
         classLevels.pop();
-
-        classAgents.push(karanDown + karanUp / 2);
+        classAgents.push((karanDown + karanUp) / 2);
     }
 }
 void amar::classLevel(queue<float>data, float L)
@@ -341,6 +343,45 @@ void amar::classLevel(queue<float>data, float L)
         temp = classLevels.back();
         if(data.empty())
             break;
+    }
+}
+void amar::fi22(queue<float>data,queue<float>clevels)
+{
+    int len = data.size();
+    float valueData = data.front();
+//        data.pop();
+    cout << "out side valudedata=" << valueData << endl;
+
+    int counter=0;
+    for(int i=1; i <= len; i++)
+    {
+        float kup,kdown; //k means 'karan'
+        kdown = clevels.front();
+        clevels.pop();
+        kup = clevels.front();
+        clevels.pop();
+
+        cout << "kdown=" << kdown  << "\tkup=" << kup << endl;
+
+
+
+
+        while(valueData >= kdown && valueData < kup)
+        {
+            if(valueDat----------------------------------------------a != kup)
+            {
+                cout << "inside while RPINT 1. valueD=" << valueData << "\tkd=" << kdown << "\tkup=" << kup<<endl;
+                counter++;
+                data.pop();
+                valueData = data.front();
+            }
+        }
+        f.push(counter);
+        counter=0;
+
+        if(data.empty())
+            break;
+
     }
 }
 void amar::fi2(queue<float>data,queue<float>classLevels)
@@ -372,7 +413,7 @@ void amar::fi2(queue<float>data,queue<float>classLevels)
             karanUp = karanUp * 100;
             cout << "after step3 karanUp =" << karanUp << endl;
 
-            karanUp--;
+            karanUp++;
             cout << "after step4 karanUp =" << karanUp << endl;
 
             karanUp = karanUp /100;
@@ -384,7 +425,7 @@ void amar::fi2(queue<float>data,queue<float>classLevels)
 
             while(temp >= karanDown && temp < karanUp)
             {
-//                cout << "\t\t temp=" << temp << "\t kd=" << karanDown << "\t ku=" << karanUp << endl;
+                cout << "\t\t temp=" << temp << "\t kd=" << karanDown << "\t ku=" << karanUp << endl;
                  counter++;
                  data.pop();
                  temp = data.front();
@@ -468,7 +509,16 @@ void amar::section2(amar o)
 
     o.classLevel(o.data,L);
 
-    o.fi2(o.data,o.classLevels);
+
+
+
+
+//    o.fi2(o.data,o.classLevels);
+    o.fi22(o.data,o.classLevels);
+
+
+
+
     for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
         o.x.push(0);
 
