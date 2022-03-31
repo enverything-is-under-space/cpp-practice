@@ -56,10 +56,10 @@ class amar
         int K(); //K = length classes(formul: 1+3.32*log10(N))  *****NOTE-> used ceil but is not best choise [bcz maybe make bigger data then false answers]
 
 
-        void fi2(queue<float>,float); //Fi section2 (formul: count data == x && data < y) y=karan UP, x=karan DOWN AND fi2 have to  use data.front[means minumum number] till classLevel front
+        void fi2(queue<float>,queue<float>); //Fi section2 (formul: count data == x && data < y) y=karan UP, x=karan DOWN AND fi2 have to  use data.front[means minumum number] till classLevel front
         void classLevel(queue<float>,float); // 2x 2x numbers saved for exmaple: 2.0-2.4 , next class is 2.4-2.8 and ...
         void classAgent(queue<float>);
-
+        float floatPointRounder(float);
         //section 2 part 2
 //        float mAvrage(queue<float>); // avrage = (formul : n[j] =  x[j] * f[j]  'then  plus all n indexes insert into ave'  ave = n[j->n.size]  -> ave / N
 //        float mode(float
@@ -267,61 +267,23 @@ float amar::R(queue<float>data)
     float min=data.front() , max = data.back();
     return max-min;
 }
+float amar::floatPointRounder(float L)
+{
+    float tempL = L;
+    int temp= (int)tempL;
+    tempL = tempL - temp;
+    tempL = tempL * 100;
+    tempL = tempL / 10;
+    tempL = round(tempL);
+    tempL = tempL / 10;
+    L = temp + tempL;
+    return L;
+}
 float amar::L(float R, float K)
 {    
-    cout << "R=" << R << "\t K= " << K << endl;
-    //-------------------------------------------------------------------------------------------- PROBLEM CLASS IS HERE
-
-
-
-
-                //CLASS  IS NOT WORKING CORRECT BECUZ OF L is not rounded correct
-        /
-
-
-
-
-            //F is not working correct bcz of L AND SOMETHING I DONT KNOW RIGHT NOW
-
-
-    // AGENT IS NOT WORKING CORRECT BCZ of I DONT KNOW RIGHT NOW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //-------------------------------------------------------------------=
-//    cout << "L = " << (R/K) << endl;
-//    cout << "LLL= " << round(2.2 / 6) << endl;
-//    cout << "LLL= " << floor(2.2 / 6+0.5) << endl;
-//    cout << "LLL= " << ceil(2.2 / 6+0.5) << endl;
-//    cout << "LLL= " << std::roundf(2.2 / 6) << endl;
-//    cout << "LLL= " << std::lroundf(2.2 / 6) << endl;
-//    cout << "LLL= " << std::llroundf(2.2 / 6) << endl;
-//    float L = R/K;
-//    L = 0.4;
-
-
-    //NOTE BUG HELP NEEEDED TO (round the float point like 0.37 -> 0.4 to closest posible number)
-    return R/K;
+    float L = R/K;
+    L = floatPointRounder(L);
+    return L;
 }
 int amar::K()
 {
@@ -381,31 +343,83 @@ void amar::classLevel(queue<float>data, float L)
             break;
     }
 }
-void amar::fi2(queue<float>data,float L)
+void amar::fi2(queue<float>data,queue<float>classLevels)
 {
-    int counter=0;
-    float temp=0;
-    float karanDown = 0;
-    float karanUp = 0;
-    for(int i=0; i<=dataCount-1; i++)
-    {
-        temp = data.front();
+        float karanDown=0;
+        float karanUp=0;
+        int counter=0;
+        float temp=0;
+        temp = (float)data.front();
 
-        karanDown = temp;
-        karanUp = karanDown + L;
-
-        while(temp >= karanDown && temp < karanUp) //NOTE BUG (needed to only 2 float number not more something like setpreciosion)
+        int len = classLevels.size();
+        for(int i=0; i<= len; i++)
         {
-             counter++;
-             data.pop();
-             temp = data.front();
+
+            //set value to karan up and down
+            karanDown = (float)classLevels.front();
+            classLevels.pop();
+            karanUp = (float)classLevels.front();
+            classLevels.pop();
+
+            cout << "karanUp =" << karanUp << endl;
+
+            int tempKaranUp = (int)karanUp;
+            cout << "after step1 karanUp =" << karanUp << endl;
+
+            karanUp = karanUp - tempKaranUp;
+            cout << "after step2 karanUp =" << karanUp << endl;
+
+            karanUp = karanUp * 100;
+            cout << "after step3 karanUp =" << karanUp << endl;
+
+            karanUp--;
+            cout << "after step4 karanUp =" << karanUp << endl;
+
+            karanUp = karanUp /100;
+            cout << "after step5 karanUp =" << karanUp << endl;
+
+            karanUp = tempKaranUp + karanUp;
+            cout << "after karanUp =" << karanUp << endl;
+
+
+            while(temp >= karanDown && temp < karanUp)
+            {
+//                cout << "\t\t temp=" << temp << "\t kd=" << karanDown << "\t ku=" << karanUp << endl;
+                 counter++;
+                 data.pop();
+                 temp = data.front();
+//                 if(karanUp == data.front())
+//                     cout << "+++++ temp = " << temp << " is == down" << karanDown << endl;
+            }
+
+            f.push(counter);
+//            cout << "counter=" << counter << endl;
+            counter=0;
+            if(data.empty())
+                break;
         }
 
-        f.push(counter);
-        counter=0;
-        if(data.empty())
-            break;
-    }
+
+
+//    for(int i=0; i<=dataCount-1; i++)
+//    {
+//        temp = data.front();
+
+//        karanDown = temp;
+//        karanUp = karaDown + L;
+
+//        while(temp >= karanDown && temp < karanUp)
+//        {
+//             counter++;
+//             data.pop();
+//             temp = data.front();
+//        }
+
+//        f.push(counter);
+//        counter=0;
+//        if(data.empty())
+//            break;
+//    }
 }
 void amar::printTableClass(queue<float>classLevels,queue<float>f,queue<float>r,queue<float>g,queue<float>classAgents)
 {
@@ -451,10 +465,13 @@ void amar::section2(amar o)
     o.printQueue(o.data);
 
     float L = o.L(o.R(o.data),o.K()); //space between classes
+
     o.classLevel(o.data,L);
-    o.fi2(o.data,L);
+
+    o.fi2(o.data,o.classLevels);
     for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
         o.x.push(0);
+
     o.ri(o.f);
     o.gi(o.f,o.x);
     o.classAgent(o.classLevels);
