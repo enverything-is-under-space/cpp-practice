@@ -347,32 +347,15 @@ void amar::classLevel(queue<float>data, float L)
 }
 int amar::searchInArray(float ar[],float searching,int arsize)
 {
-    cout << "searching = " << searching << endl;
-    int i,result=-1;
-    for(i=0; i<arsize; i++)
+    cout << "[function] searchinarray searching=" << searching << "\tarsize=" << arsize << endl;
+//    for(int d=0;d<arsize;d++)
+//        cout << "in arr[" << d << "] \t" << ar[d] << endl;
+
+    for(int i=0; i<arsize; i++)
         if(ar[i] == searching)
-        {
-            result = i;------------------------
-            break;
-        }
+            return i;
 
-
-    while(result == -1)
-    {
-        cout << "not found\n";
-        cout << searching << endl;
-        int search = (int)searching;
-        searching = searching - search;
-        searching = searching * 10;
-        searching = searching - 1;
-        searching = searching / 10;
-        searching = search  + searching;
-
-        cout << searching << endl;
-        result = searchInArray(ar,searching,arsize);
-    }
-
-     return result;
+    return -1; //return -1 means element were not found in the array
 }
 void amar::fi2(queue<float>data,queue<float>classLevels)
 {
@@ -387,28 +370,57 @@ void amar::fi2(queue<float>data,queue<float>classLevels)
         }
 
         //print for test
-        for(int j=0;j<=lendata-1; j++)
-             cout << "dataar[" << j<< "]\t = " << dataArray[j] << endl;
+//        for(int j=0;j<=lendata-1; j++)
+//             cout << "dataar[" << j<< "]\t = " << dataArray[j] << endl;
 
-        int len = classLevels.size();
+        float smallestNumber = classLevels.front();
+        float biggestNumber = classLevels.back();
+
+        int len = classLevels.size()/2;
         for(int i=0; i<= len-1; i++)
         {
-
             //set value to karan up and down
             float karanDown = (float)classLevels.front();
             classLevels.pop();
             float karanUp = (float)classLevels.front();
             classLevels.pop();
+ cout << "-------------------" << endl;
 
-            int  indexDown= searchInArray(dataArray,karanDown,lendata);
+
+            cout << "\n\n\n\n\n\n\n\nINDEX DOWN ==================\n";
+
+            int indexDown= searchInArray(dataArray,karanDown,lendata);
+            cout << "indexD= " << indexDown << endl;
+            cout << "kup=" << karanUp << endl;
+            if(indexDown == -1)
+                for(float ops=karanDown; ops< karanUp; ops += 0.1)
+                {
+                    indexDown = searchInArray(dataArray,ops,lendata);
+                    cout << "ind=" << indexDown << endl;
+                    if(indexDown != -1)
+                        break;
+                }
+        //BUG CANT fIND THE LAST NUMBER LIKE 4 skipped by index = -1 !!!!
+            cout << "\n\n\n\n\n\n\n\nINDEX UP ==================\n";
             int  indexUp = searchInArray(dataArray,karanUp,lendata);
-            cout <<  karanDown << " .. " <<indexDown << "\t" << karanUp << " .. " << indexUp << endl;
-            int counter = 0;
-            for(int k=indexDown; k<= indexUp; k++)
-            {
-                counter++;
-            }
-            f.push(counter);
+            cout << "indexUp= " << indexUp << endl;
+            cout << "kup=" << karanUp << endl;
+            if(indexUp == -1)
+                for(float ops=karanUp; ops<=biggestNumber; ops += 0.1)
+                {
+                    indexUp = searchInArray(dataArray,ops,lendata);
+                    cout << "ind=" << indexUp << endl;
+                    if(indexUp != -1)
+                        break;
+                }
+
+//            cout <<  karanDown << " .. " <<indexDown << "\t" << karanUp << " .. " << indexUp << endl;
+//            cout << "--------- counter started" << endl;
+//            int counter = 0;
+//            for(int k=indexDown; k<= indexUp; k++)
+//                counter++;
+//            cout << "======== counter stopped" << endl;
+//            f.push(counter);
         }
 }
 void amar::printTableClass(queue<float>classLevels,queue<float>f,queue<float>r,queue<float>g,queue<float>classAgents)
@@ -461,10 +473,15 @@ void amar::section2(amar o)
 
 
     o.printQueue(o.f);
+    o.sortQueue(o.data);
+
+    cout << "\n\n\n\n";
 
     o.fi2(o.data,o.classLevels);
 
     o.printQueue(o.f);
+    o.sortQueue(o.data);
+
 
 
 //    for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
@@ -473,7 +490,7 @@ void amar::section2(amar o)
 //    o.ri(o.f);
 //    o.gi(o.f,o.x);
 //    o.classAgent(o.classLevels);
-//    o.printTableClass(o.classLevels, o.f, o.r, o.g, o.classAgents);
+    o.printTableClass(o.classLevels, o.f, o.r, o.g, o.classAgents);
 }
 int main()
 {
