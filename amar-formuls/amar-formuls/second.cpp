@@ -369,16 +369,15 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
         temp = temp *10;
         temp = round(temp);
         int b=  temp;
-        cout << "b=" << b << endl;
         temp = (float)b/10;
         float resultAB = a + temp;
-//        cout << "resutl ab=" << resultAB << endl;
 
         //for kDown
         temp = kDown;
         int akDown = temp;
         temp = temp - akDown;
         temp = temp *10;
+        temp = round(temp);
         int bkDown = temp;
         temp = (float)bkDown / 10;
         kDown = akDown + temp;
@@ -388,29 +387,27 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
         int akUp = temp;
         temp = temp - akUp;
         temp = temp *10;
+        temp = round(temp);
         int bkUp = temp;
-        cout << bkUp << endl;
         temp = (float)bkUp / 10;
-        cout << temp << endl;
         kUp = akUp + temp;
 
-        cout << endl << endl;
-        cout << "a=" << a << "\tb=" << b << "\td=" << akDown << "." << bkDown <<
-                "\tUp=" << akUp << "." <<  bkUp << endl << endl << endl;
+//        cout << endl << endl;
+//        cout << "a=" << a << "\tb=" << b << "\td=" << akDown << "." << bkDown <<
+//                "\tUp=" << akUp << "." <<  bkUp << endl << endl << endl;
 
-        cout << "resAB=" << resultAB << "\tkDown=" << kDown << "\tkUp=" << kUp << endl;
-//        if(resultAB >= kDown && resultAB < kUp && resultAB != kUp)
-//            counter++;
-        if(resultAB)
+//        cout << "resAB=" << resultAB << "\tkDown=" << kDown << "\tkUp=" << kUp << endl;
+
+        if(resultAB >= kDown && resultAB < kUp)
         {
-
+            counter++;
         }
 
     }
 
 
 
-    cout << "\t\t counter = " << counter << endl;
+//    cout << "\t\t counter = " << counter << endl;
 
 
 
@@ -470,6 +467,17 @@ void amar::fi2(queue<float>data,queue<float>classLevels)
 //            int counter = indexUp - indexDown;
 //            f.push(counter);
 //            cout <<  karanDown << " is in: " <<indexDown << "\t" << karanUp << " is in: " << indexUp  << "\tcounter= " << counter << endl;
+
+
+
+
+//    for(int i=0; i<30; i++)
+//    {
+//          arr[i] = round(arr[i] * 100) / 100.0;
+
+//          if(arr[i] == 2.8)
+//              cout << "=========================2.8" << endl;
+//    }
 void amar::printTableClass(queue<float>classLevels,queue<float>f,queue<float>r,queue<float>g,queue<float>classAgents)
 {
     cout << "\n\n\n";
@@ -496,28 +504,17 @@ void amar::printTableClass(queue<float>classLevels,queue<float>f,queue<float>r,q
 }
 void amar::section2(amar o)
 {
-//    o.giveInput();
-    float arr[30] =
-    {2.0,2.1,2.3,3.0,3.1,2.7,
-     2.8,3.5,3.1,3.7,3.1,2.6,
-     3.5,4.0,2.3,3.5,4.2,3.7,
-     3.2,2.7,2.5,2.7,3.8,3.0,
-     2.8,2.9,4.1,3.2,2.8,2.2};
+    o.giveInput();
+//    float arr[30] =
+//    {2.0,2.1,2.3,3.0,3.1,2.7,
+//     2.8,3.5,3.1,3.7,3.1,2.6,
+//     3.5,4.0,2.3,3.5,4.2,3.7,
+//     3.2,2.7,2.5,2.7,3.8,3.0,
+//     2.8,2.9,4.1,3.2,2.8,2.2};
 
 
-//    for(int i=0; i<30; i++)
-//    {
-//          arr[i] = round(arr[i] * 100) / 100.0;
-
-//          if(arr[i] == 2.8)
-//              cout << "=========================2.8" << endl;
-
-//    }
-
-    for(int te=0;te<=30-1;te++)
-        o.data.push(arr[te]);
-
-
+//    for(int te=0;te<=30-1;te++)
+//        o.data.push(arr[te]);
 
     o.sortQueue(o.data);
     o.printQueue(o.data);
@@ -536,12 +533,12 @@ void amar::section2(amar o)
 
 
 
-//    for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
-//        o.x.push(0);
+    for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
+        o.x.push(0);
 
-//    o.ri(o.f);
-//    o.gi(o.f,o.x);
-//    o.classAgent(o.classLevels);
+    o.ri(o.f);
+    o.gi(o.f,o.x);
+    o.classAgent(o.classLevels);
     o.printTableClass(o.classLevels, o.f, o.r, o.g, o.classAgents);
 }
 int main()
