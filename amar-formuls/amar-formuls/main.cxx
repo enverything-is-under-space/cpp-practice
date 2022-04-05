@@ -59,9 +59,10 @@ class amar
         void classLevel(queue<float>,float); // 2x 2x numbers saved for exmaple: 2.0-2.4 , next class is 2.4-2.8 and ...
         void classAgent(queue<float>);
         float floatPointRounder(float);
-        int searchInArray(float[],float,int);// NOTE MAYBE REMOVE THIS
         int fi2NumberCounter(float[],float,float,int);
-        //section 2 part 2
+
+
+        //-------------- section 2 part 2
 //        float mAvrage(queue<float>); // avrage = (formul : n[j] =  x[j] * f[j]  'then  plus all n indexes insert into ave'  ave = n[j->n.size]  -> ave / N
 //        float mode(float
 //        float miane();
@@ -127,12 +128,11 @@ void amar::fi()
         temp = tempQ.front();
         tempQ.pop();
         counter++;
-        //if(temp == tempQ.front())
-            while(temp == tempQ.front())
-            {
-                counter++;
-                tempQ.pop();
-            }
+        while(temp == tempQ.front())
+        {
+            counter++;
+            tempQ.pop();
+         }
 
         f.push(counter);
         counter=0;
@@ -236,9 +236,8 @@ void amar::xiRemoveDuplicate(float a[])
     }
 
     for (i = 0; i < size; i++)
-    {
        x.push(a[i]);
-    }
+
 }
 float amar::xi(queue<float>a)
 {
@@ -255,7 +254,7 @@ float amar::xi(queue<float>a)
         xiRemoveDuplicate(tempA);
     }
     else
-        cout << "queue was empty!" << endl;
+        cout << "queue were empty!" << endl;
 
     return 0;
 }
@@ -288,10 +287,10 @@ int amar::K()
 }
 void amar::section1(amar o)
 {
-    //o.giveInput();
-    float arr[30] = {5,4,2,1,1,1,3,3,3,2,0,5,0,2,2,2,2,4,4,1,0,1,1,3,2,5,2,1,0,4};
-    for(int te=0;te<=30-1;te++)
-        o.data.push(arr[te]);
+    o.giveInput();
+//    float arr[30] = {5,4,2,1,1,1,3,3,3,2,0,5,0,2,2,2,2,4,4,1,0,1,1,3,2,5,2,1,0,4};
+//    for(int te=0;te<=30-1;te++)
+//        o.data.push(arr[te]);
 
     o.sortQueue(o.data);
     o.xi(o.data);
@@ -341,23 +340,9 @@ void amar::classLevel(queue<float>data, float L)
             break;
     }
 }
-int amar::searchInArray(float ar[],float searching,int arsize)
-{
-    for(int i=0; i<arsize; i++)
-        if(ar[i] == searching)
-            return i;
-
-    return -1; //return -1 means element were not found in the array
-}
 int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
 {
     int counter=0;
-
-//    for(int i=0; i<arsize; i++)
-//                 ar[i] = round(ar[i] * 100) / 100.0;
-//        cout << setprecision(9) <<ar[i] << endl;
-
-
 
     for(int i=0; i<arsize; i++)
     {
@@ -392,24 +377,9 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
         temp = (float)bkUp / 10;
         kUp = akUp + temp;
 
-//        cout << endl << endl;
-//        cout << "a=" << a << "\tb=" << b << "\td=" << akDown << "." << bkDown <<
-//                "\tUp=" << akUp << "." <<  bkUp << endl << endl << endl;
-
-//        cout << "resAB=" << resultAB << "\tkDown=" << kDown << "\tkUp=" << kUp << endl;
-
         if(resultAB >= kDown && resultAB < kUp)
-        {
             counter++;
-        }
-
     }
-
-
-
-//    cout << "\t\t counter = " << counter << endl;
-
-
 
     return counter;
 }
@@ -434,50 +404,9 @@ void amar::fi2(queue<float>data,queue<float>classLevels)
             float karanUp = (float)classLevels.front();
             classLevels.pop();
 
-//            for(int i=0; i<lendata; i++)
-//                cout << "- - - - " << setprecision(9) << dataArray[i] << endl;
             f.push(fi2NumberCounter(dataArray,karanDown,karanUp,lendata));
         }
 }
-
-//----------function fi2 code :  index system for find the how many number is inside range (class)
-//            int indexDown= searchInArray(dataArray,karanDown,lendata);
-//            if(indexDown == -1)
-//                for(float ops=karanDown; ops< karanUp; ops += 0.1)
-//                {
-//                    indexDown = searchInArray(dataArray,ops,lendata);
-//                    if(indexDown != -1)
-//                    {
-//                        if(indexDown == 0)
-//                            indexDown++;
-
-//                        break;
-//                    }
-
-//                }
-//        //BUG CANT fIND THE LAST NUMBER LIKE 4 & 4.4 skipped by index = -1 !!!!
-//            int  indexUp = searchInArray(dataArray,karanUp,lendata);
-//            if(indexUp == -1)
-//                for(float ops=karanUp; ops>karanDown; ops -= 0.1)
-//                {
-//                    indexUp = searchInArray(dataArray,ops,lendata);
-//                    if(indexUp != -1)
-//                        break;
-//                }
-//            int counter = indexUp - indexDown;
-//            f.push(counter);
-//            cout <<  karanDown << " is in: " <<indexDown << "\t" << karanUp << " is in: " << indexUp  << "\tcounter= " << counter << endl;
-
-
-
-
-//    for(int i=0; i<30; i++)
-//    {
-//          arr[i] = round(arr[i] * 100) / 100.0;
-
-//          if(arr[i] == 2.8)
-//              cout << "=========================2.8" << endl;
-//    }
 void amar::printTableClass(queue<float>classLevels,queue<float>f,queue<float>r,queue<float>g,queue<float>classAgents)
 {
     cout << "\n\n\n";
@@ -517,9 +446,6 @@ void amar::section2(amar o)
 //        o.data.push(arr[te]);
 
     o.sortQueue(o.data);
-    o.printQueue(o.data);
-
-
 
     float L = o.L(o.R(o.data),o.K()); //space between classes
 
