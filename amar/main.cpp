@@ -20,12 +20,17 @@ class amar
         //-------------- blow functions are made for formul steps
         void section1(amar);
         void section2(amar);
+        void section2_2(amar);
 
 
         //-------------- used in commen sections
-        void giveInput();
+        void giveInput(); //to-fill data
         queue<float> data,x,f,g,r;
         queue<float> classLevels,classAgents;
+        void giveInput(queue<float>&q);//to-fill parameter queue
+        queue<float> simpleAvrageValues;
+
+
 
         void printQueue(queue<float>);
         void swapQueue(queue<float>,queue<float>);
@@ -41,7 +46,7 @@ class amar
         void printTable(queue<float>,queue<float>,queue<float>,queue<float>);
         int ni(); //N = data count [tedad kole data]
         void ri(queue<float>); //ri = faravani nesbi (formul : N[teadad kol data] / f[faravni] )
-        void gi(queue<float>f,queue<float>x); //gi = faravni tajamoE (formul : f[faravni] + last indexes[tabaghehaye balaye khodesh])
+        void gi(queue<float>,queue<float>); //gi = faravni tajamoE (formul : f[faravni] + last indexes[tabaghehaye balaye khodesh])
         void fi(); //fi = faravani (formul : count repeat data)
         float xi(queue<float>); //xi = tedade kol data ha [count data]
         void xiRemoveDuplicate(float[]); //is K [tedade tabaghehaye jadvale faravani] =  xi.size
@@ -63,16 +68,87 @@ class amar
 
 
         //-------------- section 2 part 2
-//        float mAvrage(queue<float>); // avrage = (formul : n[j] =  x[j] * f[j]  'then  plus all n indexes insert into ave'  ave = n[j->n.size]  -> ave / N
-//        float mode(float
-//        float miane();
-//        float charak();
-
+        float simpleAvrage(queue<float>);
+        void printTableSection2_2(queue<float>,queue<float>);
+        float avrageFromTableFaravani(queue<float>,queue<float>);
+        MODEIAN();
+        float simpleMiane(queue<float>);
+        MianFromTableFaravani();
 
 
 
 };
+float simpleMiane(queue<float>data)
+{
+    int len = data.size();
+    float sum=0;
 
+    if(len%2!=0)
+    {
+        for(int i=1; i<= ((len/2)-1); i++)
+            data.pop();
+        return data.front();
+    }
+    else
+    {
+        len = (int)len/2;
+        for(int i=1; i<= len+1; i++)
+        {
+            if(i == len || i == len+1)
+                sum += data.front();
+
+            data.pop();
+        }
+    }
+    return sum/2;
+}
+float amar::avrageFromTableFaravani(queue<float>x,queue<float>f)
+{
+    int len = x.size();
+    float n=0;
+    float sum=0;
+
+    for(int i=1; i<= len; i++)
+    {
+        sum += (x.front() * f.front());
+        n += f.front();
+        x.pop();
+        f.pop();
+    }
+
+    sum = sum/n;
+
+
+    return sum;
+}
+
+void amar::giveInput(queue<float>&q)
+{
+    cout << "enter length: ";
+    int len=0;
+    cin >> len;
+
+    float ar[len];
+    for(int i=0; i<=len-1; i++)
+    {
+        cout << "enter #" << i << " number: ";
+        cin >> ar[i];
+        q.push(ar[i]);
+    }
+}
+float amar::simpleAvrage(queue<float>q)
+{
+    int len = q.size();
+    float sum=0;
+    for(int i=1;i<=len;i++)
+    {
+        sum += q.front();
+        q.pop();
+    }
+
+
+    return sum/len;
+}
 void amar::gi(queue<float>f,queue<float>x)
 {
     int len = x.size();
@@ -276,7 +352,7 @@ float amar::floatPointRounder(float L)
     return L;
 }
 float amar::L(float R, float K)
-{    
+{
     float L = R/K;
     L = floatPointRounder(L);
     return L;
@@ -467,11 +543,70 @@ void amar::section2(amar o)
     o.classAgent(o.classLevels);
     o.printTableClass(o.classLevels, o.f, o.r, o.g, o.classAgents);
 }
+
+void amar::printTableSection2_2(queue<float> x, queue<float> f)
+{
+    int len = x.size();
+    cout << "xi|\tfi" << endl;
+    for(int i=1; i<=len; i++)
+    {
+        cout << x.front() << "\t" << f.front() << endl;
+        x.pop();
+        f.pop();
+    }
+}
+
+void amar::section2_2(amar o)
+{
+    // - - - - simple Avrage - - - -
+    /*
+    o.giveInput(o.simpleAvrageValues);
+    o.sortQueue(o.simpleAvrageValues);
+    float avrage = o.simpleAvrage(o.simpleAvrageValues);
+    cout << "avrage= " << avrage << endl;
+    */
+
+
+
+
+
+    // - - - - Avrage from Table simple Faravani - - - -
+
+    /* //for fast test automatically fill data queue
+     * float auto_data[30] = {
+                           2,2,2,2,2,2,2,2,
+                           1,1,1,1,1,1,1,
+                           4,4,4,4,
+                           3,3,3,3,
+                           5,5,5,
+                           0,0,0,0
+                          };
+    for(int i=0;i<=30-1;i++)
+        o.data.push(auto_data[i]);*/
+
+    /*
+    o.giveInput(o.data);
+    o.sortQueue(o.data);
+    o.xi(o.data);
+    o.fi();
+    o.printTableSection2_2(o.x,o.f);
+    float avrage = o.avrageFromTableFaravani(o.x,o.f);
+    cout << "------ Avrage = " << avrage << endl;
+    */
+
+
+    // - - - - simple Miane - - - -
+//    cout << "simple Miane= " << o.simpleMiane(o.data);
+
+
+
+}
 int main()
 {
     amar o;
 //    o.section1(o);
-    o.section2(o);
+//    o.section2(o);
+    o.section2_2(o);
 
     return 0;
 }
