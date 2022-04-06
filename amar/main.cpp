@@ -29,6 +29,7 @@ class amar
         queue<float> classLevels,classAgents;
         void giveInput(queue<float>&q);//to-fill parameter queue
         queue<float> simpleAvrageValues;
+        queue<float> charkValues; //data push syntax: q1,q2,q3
 
 
 
@@ -71,28 +72,91 @@ class amar
         float simpleAvrage(queue<float>);
         void printTableSection2_2(queue<float>,queue<float>);
         float avrageFromTableFaravani(queue<float>,queue<float>);
-        MODEIAN();
-        float simpleMiane(queue<float>);
-        MianFromTableFaravani();
+        float simpleMiane(queue<float>); //also Chark
+        void chark(queue<float>);
+        bool checkValueInQueue(queue<float>,float);
 
 
 
 };
-float simpleMiane(queue<float>data)
+bool amar::checkValueInQueue(queue<float>data,float value)
+{
+    int len = data.size();
+    for(int i=1;i<=len;i++)
+    {
+        if(data.front() != value)
+            data.pop();
+        else
+            return true;
+    }
+    return false;
+}
+void amar::chark(queue<float>data)
+{
+    queue<float> tempData;
+    int len = data.size();
+    float q1=0; float q2=0; float q3=0;
+    q2 = simpleMiane(data);
+
+    if(!checkValueInQueue(data,q2))
+    {
+        for(int t=0; t<= (len/2-1); t++)
+        {
+            tempData.push(data.front());
+            data.pop();
+        }
+        q1 = simpleMiane(tempData);
+
+        //q2 is here
+        data.pop();
+        data.pop();
+
+        cleanQueue(tempData);
+        for(int t=0; t<= (len/2-1); t++)
+        {
+            tempData.push(data.front());
+            data.pop();
+        }
+        q3 = simpleMiane(tempData);
+    }
+    else
+    {
+        for(int i=1; i<= 2; i++)
+        {
+            cleanQueue(tempData);
+            for(int t=1; t<= len/2; t++)
+            {
+                tempData.push(data.front());
+                data.pop();
+            }
+            data.pop();
+            if(i==1)
+                q1 = simpleMiane(tempData);
+            else
+                q3 = simpleMiane(tempData);
+        }
+    }
+
+     charkValues.push(q1);
+     charkValues.push(q2);
+     charkValues.push(q3);
+     cout << "q1=" << q1 << "\tq2=" << q2 << "\tq3=" << q3 << endl;
+}
+float amar::simpleMiane(queue<float>data)
 {
     int len = data.size();
     float sum=0;
 
-    if(len%2!=0)
+    if(len%2)
     {
-        for(int i=1; i<= ((len/2)-1); i++)
+        for(int i=1; i<= (len/2); i++)
             data.pop();
         return data.front();
     }
     else
     {
         len = (int)len/2;
-        for(int i=1; i<= len+1; i++)
+        for(int i=1; i<= (len+1); i++)
         {
             if(i == len || i == len+1)
                 sum += data.front();
@@ -121,7 +185,6 @@ float amar::avrageFromTableFaravani(queue<float>x,queue<float>f)
 
     return sum;
 }
-
 void amar::giveInput(queue<float>&q)
 {
     cout << "enter length: ";
@@ -543,7 +606,6 @@ void amar::section2(amar o)
     o.classAgent(o.classLevels);
     o.printTableClass(o.classLevels, o.f, o.r, o.g, o.classAgents);
 }
-
 void amar::printTableSection2_2(queue<float> x, queue<float> f)
 {
     int len = x.size();
@@ -555,7 +617,6 @@ void amar::printTableSection2_2(queue<float> x, queue<float> f)
         f.pop();
     }
 }
-
 void amar::section2_2(amar o)
 {
     // - - - - simple Avrage - - - -
@@ -597,6 +658,21 @@ void amar::section2_2(amar o)
 
     // - - - - simple Miane - - - -
 //    cout << "simple Miane= " << o.simpleMiane(o.data);
+
+
+
+    // - - - - Chark - - - -
+    /*
+     *     float auto_data[11] = {35,30,33,39,
+                          41,29,30,36,
+                          45,40,31};
+    for(int i=0;i<=11-1;i++)
+        o.data.push(auto_data[i]);
+     */
+
+/*  o.giveInput(o.data);
+    o.sortQueue(o.data);
+    o.chark(o.data);*/
 
 
 
