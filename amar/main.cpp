@@ -25,12 +25,13 @@ class amar
 
         //-------------- used in commen sections
         void giveInput(); //to-fill data
+        void giveInput(queue<float>&q);//to-fill parameter queue
+
         queue<float> data,x,f,g,r;
         queue<float> classLevels,classAgents;
-        void giveInput(queue<float>&q);//to-fill parameter queue
         queue<float> simpleAvrageValues;
         queue<float> charkValues; //data push syntax: q1,q2,q3
-
+        queue<float> modes;
 
 
         void printQueue(queue<float>);
@@ -48,7 +49,7 @@ class amar
         int ni(); //N = data count [tedad kole data]
         void ri(queue<float>); //ri = faravani nesbi (formul : N[teadad kol data] / f[faravni] )
         void gi(queue<float>,queue<float>); //gi = faravni tajamoE (formul : f[faravni] + last indexes[tabaghehaye balaye khodesh])
-        void fi(); //fi = faravani (formul : count repeat data)
+        void fi(queue<float>); //fi = faravani (formul : count repeat data)
         float xi(queue<float>); //xi = tedade kol data ha [count data]
         void xiRemoveDuplicate(float[]); //is K [tedade tabaghehaye jadvale faravani] =  xi.size
 
@@ -75,10 +76,116 @@ class amar
         float simpleMiane(queue<float>); //also Chark
         void chark(queue<float>);
         bool checkValueInQueue(queue<float>,float);
-
+        float mianeFromTableFaravani();
+        void simpleMode(queue<float>);
+        int howManyRepeated(float,queue<float>);
 
 
 };
+int amar::howManyRepeated(float value , queue<float>data)
+{
+    int len=data.size();
+    int counter=0;
+    for(int i=1; i<=len; i++)
+    {
+
+        queue<float> tempD = data;
+        for(int j=1; j<=len; j++)
+        {
+            if(tempD.front() == value)
+                counter++;
+            tempD.pop();
+        }
+
+    }
+
+    return counter;
+}
+void amar::simpleMode(queue<float>fQ)
+{
+    const int len= fQ.size();
+
+
+    //count max number
+    float counter[len];
+    queue<float> tempQ = fQ;
+    for(int k=1; k<= len; k++)
+    {
+        float value = howManyRepeated(tempQ.front(),te
+        tempQ.pop();
+    }
+
+
+}
+float amar::mianeFromTableFaravani()
+{
+
+    float y = ni()/2;
+
+
+    //for calculate Gi and Fi
+    float l = L(R(data),K()); //space between classes
+    classLevel(data,l);
+    fi2(data,classLevels);
+
+    for(int i=1; i<= (int)K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
+        x.push(0);
+    gi(f,x);
+
+    float giMinusOne = 0;
+    int lookingForindex=0;
+    queue<float> tempData = g;
+
+    for(int i=1; i<=K(); i++)
+        if(tempData.front()>=y)
+        {
+            lookingForindex = i;
+            break;
+        }
+        else
+            tempData.pop();
+
+    tempData=g;//re-fill from G
+    for(int i=1; i<=K(); i++)
+        if(i==lookingForindex-1)
+        {
+            giMinusOne = tempData.front();
+            break;
+        }
+        else
+            tempData.pop();
+
+
+    //fetch Fi
+    tempData=f;
+    float fiValue=0;
+    for(int i=1; i<=K(); i++)
+        if(i==lookingForindex)
+        {
+            fiValue = tempData.front();
+            break;
+        }
+        else
+            tempData.pop();
+
+
+
+    //fetch ai or same class KaranDown
+    tempData=classLevels;
+    float ai=0; //is same kdown that level
+    for(int i=1; i<=K()*2; i++)
+        if(i==(lookingForindex*2)-1)
+        {
+            ai = tempData.front();
+            break;
+        }
+        else
+            tempData.pop();
+
+
+    //LESGO formul is: m=  (((y - gi[-1]) / fi )* l )+ ai
+    return (((y-giMinusOne)/fiValue) * l) + ai;
+}
 bool amar::checkValueInQueue(queue<float>data,float value)
 {
     int len = data.size();
@@ -256,10 +363,8 @@ void amar::printTable(queue<float>x,queue<float>f,queue<float>r,queue<float>g)
     }
 
 }
-void amar::fi()
+void amar::fi(queue<float>tempQ)
 {
-    queue<float> tempQ = data;
-
     int counter=0;
     float temp=0;
     for(int i=0; i<=dataCount-1; i++)
@@ -433,7 +538,7 @@ void amar::section1(amar o)
 
     o.sortQueue(o.data);
     o.xi(o.data);
-    o.fi();
+    o.fi(o.data);
     o.ri(o.f);
     o.gi(o.f,o.x);
     o.printTable(o.x,o.f,o.r,o.g);
@@ -486,7 +591,7 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
     for(int i=0; i<arsize; i++)
     {
         float temp = ar[i];
-
+//        cout << "\n\nar[" << i << "]="  << ar[i] << endl;
         //for float ar[i]
         int a= temp;
         temp = temp - a;
@@ -496,6 +601,7 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
         temp = (float)b/10;
         float resultAB = a + temp;
 
+//        cout << "resultAB=" << resultAB << endl;
         //for kDown
         temp = kDown;
         int akDown = temp;
@@ -506,6 +612,7 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
         temp = (float)bkDown / 10;
         kDown = akDown + temp;
 
+//        cout << "KDOWN=" << kDown << endl;
         //for kUp
         temp = kUp;
         int akUp = temp;
@@ -516,14 +623,26 @@ int amar::fi2NumberCounter(float ar[],float kDown,float kUp,int arsize)
         temp = (float)bkUp / 10;
         kUp = akUp + temp;
 
+
+//        cout << "KUP=" << kUp << endl;
         if(resultAB >= kDown && resultAB < kUp)
+        {
+//            cout << "- - - ab=" << resultAB << " is >= kdown " << kDown << " and AB="  << resultAB << " is < kup " <<kUp << endl;
             counter++;
+        }
+
     }
 
+//    cout << "****************************** counter=" << counter << endl;
     return counter;
 }
 void amar::fi2(queue<float>data,queue<float>classLevels)
 {
+//    cout <<"data from fi2=\n";
+//        printQueue(data);
+//        cout <<"classLevels from fi2=\n";
+//            printQueue(classLevels);
+
 
         //write queue data into an array
         int lendata = data.size();
@@ -542,6 +661,8 @@ void amar::fi2(queue<float>data,queue<float>classLevels)
             classLevels.pop();
             float karanUp = (float)classLevels.front();
             classLevels.pop();
+//            cout << "\nkdown=" << karanDown;
+//            cout << "kup=" << karanUp;
 
             f.push(fi2NumberCounter(dataArray,karanDown,karanUp,lendata));
         }
@@ -587,17 +708,9 @@ void amar::section2(amar o)
     o.sortQueue(o.data);
 
     float L = o.L(o.R(o.data),o.K()); //space between classes
-
     o.classLevel(o.data,L);
-
-
     cout << "\n\n\n\n";
-
     o.fi2(o.data,o.classLevels);
-
-
-
-
     for(int i=1; i<= (int)o.K(); i++) //bcz gi() will give size from queue x and queue x is empty. we need to fill with '0' as classesLength, classesLength is on K()
         o.x.push(0);
 
@@ -676,6 +789,73 @@ void amar::section2_2(amar o)
 
 
 
+
+
+
+
+    // - - - - miane From Table Faravani - - - -
+    /*const int len = 30;
+        float arr[len] =
+        {
+            2.0,2.1,2.3,3.0,3.1,2.7,2.8,3.5,3.1,3.7,3.1,2.6,3.5,
+            4.0,2.3,3.5,4.2,3.7,3.2,2.7,2.5,2.7,3.8,3.0,2.8,2.9,
+            4.1,3.9,2.8,2.2
+
+        };
+    for(int i=0;i<=len-1;i++)
+        o.data.push(arr[i]);
+    */
+
+    /*
+    o.giveInput(o.data);
+    o.sortQueue(o.data);
+    cout << o.mianeFromTableFaravani() << endl;
+    */
+
+
+
+
+    // - - - - Mode/Nama From Faravani Table - - - -
+    //formul M =  ((d1 / (d1+d2)) * L)+ ai
+    const int len = 8;
+        float arr[len] =
+        {
+             17,13,11,9,7,4,3,2
+        };
+    for(int i=0;i<=len-1;i++)
+        o.data.push(arr[i]);
+
+    o.simpleMode(o.data);
+    printQueue(o.modes);
+    if(o.modes.size() == 0)
+        cout << "these numbers dont have MODE." << endl;
+
+
+
+    queue<float> tempD;
+    float arr2[9] =
+            {
+                 15,17,16,14,15,16,18,15,12
+            };
+    for(int i=0;i<=9-1;i++)
+        tempD.push(arr2[i]);
+
+    printQueue(tempD);
+
+    o.simpleMode(tempD);
+    printQueue(o.modes);
+
+
+
+//    float arr3[9] =
+//            {
+//                 67,67,67,65,65,65,63,62,65
+//            };
+
+//    for(int i=0;i<=9-1;i++)
+//        o.data.push(arr3[i]);
+//    o.simpleMode(o.data);
+//    printQueue(o.modes);
 }
 int main()
 {
