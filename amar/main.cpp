@@ -31,12 +31,13 @@ class amar
         queue<float> classLevels,classAgents;
         queue<float> simpleAvrageValues;
         queue<float> charkValues; //data push syntax: q1,q2,q3
-        queue<float> modes;
+        queue<float> mods;
 
 
         void printQueue(queue<float>);
         void swapQueue(queue<float>,queue<float>);
         void sortQueue(queue<float>);  // ************************************NOTE BUG or Problem sometime happen: trash value pushed inside queue
+        void sortQueueRef(queue<float>&);
         void cleanQueue(queue<float>&);
         void sSwap(float*,float*); //sort (sub-function)
         void sBubbleSort(float[],int); //sort (sub-function)
@@ -77,45 +78,81 @@ class amar
         void chark(queue<float>);
         bool checkValueInQueue(queue<float>,float);
         float mianeFromTableFaravani();
-        void simpleMode(queue<float>);
-        int howManyRepeated(float,queue<float>);
-
-
+        int findValueFromQueue(queue<float>,float);
+        void simpleMod(queue<float>);
+        queue<float> mod(queue<float>f,queue<float>x);
 };
-int amar::howManyRepeated(float value , queue<float>data)
-{
-    int len=data.size();
-    int counter=0;
-    for(int i=1; i<=len; i++)
-    {
 
-        queue<float> tempD = data;
-        for(int j=1; j<=len; j++)
+queue<float> amar::mod(queue<float> f, queue<float> x)
+{
+    queue<float> result;
+    queue<float> tempF = f;
+    sortQueueRef(tempF);
+    int maxval = tempF.back();
+    cout << "maxval;=" << maxval << endl;
+    int flen = f.size();
+    for(int i=1; i<=flen; i++)
+    {
+//        if(f.empty() || x.empty())
+//            break;
+        if(maxval >= f.front())
+             result.push(x.front());
+
+
+        f.pop();
+        x.pop();
+    }
+
+    return result;
+}
+void amar::simpleMod(queue<float>q)
+{
+    queue<float> tempQ = q;
+    int len = q.size();
+    queue<float> tempData;
+
+    //fi() was not working code copied here
+    int counter=0;
+    float temp=0;
+    for(int i=0; i<=len-1; i++)
+    {
+        temp = tempQ.front();
+        tempQ.pop();
+        counter++;
+        tempData.push(temp);
+        while(temp == tempQ.front())
         {
-            if(tempD.front() == value)
-                counter++;
-            tempD.pop();
+            counter++;
+            tempQ.pop();
         }
 
+        f.push(counter);
+        counter=0;
+        if(temp == tempQ.back())
+            break;
     }
 
-    return counter;
+    queue<float> res = mod(f,tempData);
+    if(res.empty())
+        cout << "mod not found."  << endl;
+    else
+        printQueue(mod(f,tempData));
 }
-void amar::simpleMode(queue<float>fQ)
+int amar::findValueFromQueue(queue<float>q,float val)
 {
-    const int len= fQ.size();
-
-
-    //count max number
-    float counter[len];
-    queue<float> tempQ = fQ;
-    for(int k=1; k<= len; k++)
+    int count = 0;
+    int len= q.size();
+    for(int i=1; i<= len+1; i++)
     {
-        float value = howManyRepeated(tempQ.front(),te
-        tempQ.pop();
+        count++;
+        if(q.front() == val)
+            return count;
+        q.pop();
     }
 
-
+    if(count==len+1)
+        return -1;
+    return count;
 }
 float amar::mianeFromTableFaravani()
 {
@@ -389,6 +426,33 @@ void amar::cleanQueue(queue<float>&q)
     queue<float> emptyQ;
     swap(emptyQ,q);
 }
+void amar::sortQueueRef(queue<float> &a)
+{
+    const int len = a.size();
+
+    float tempA [len];
+
+    if(!a.empty())
+    {
+        for(int i=0; i<= len-1 ; i++)
+        {
+            tempA[i] = a.front();
+            a.pop();
+        }
+
+        int i, j;
+        for (i = 0; i < len; i++)
+            for (j = 0; j < len-i; j++)
+                if (tempA[j] > tempA[j+1])
+                    sSwap(&tempA[j], &tempA[j+1]);
+
+
+        //insert into refrence queue
+        for(j=1;j<len+1;j++)
+            a.push(tempA[j]);
+    }
+
+}
 void amar::sortQueue(queue<float>a)
 {
     const int len = a.size();
@@ -529,6 +593,7 @@ int amar::K()
 {
     return round(1 + 3.32 * log10(ni()));
 }
+//function was not working i will test here
 void amar::section1(amar o)
 {
     o.giveInput();
@@ -800,7 +865,6 @@ void amar::section2_2(amar o)
             2.0,2.1,2.3,3.0,3.1,2.7,2.8,3.5,3.1,3.7,3.1,2.6,3.5,
             4.0,2.3,3.5,4.2,3.7,3.2,2.7,2.5,2.7,3.8,3.0,2.8,2.9,
             4.1,3.9,2.8,2.2
-
         };
     for(int i=0;i<=len-1;i++)
         o.data.push(arr[i]);
@@ -817,45 +881,20 @@ void amar::section2_2(amar o)
 
     // - - - - Mode/Nama From Faravani Table - - - -
     //formul M =  ((d1 / (d1+d2)) * L)+ ai
+    //problem : in bad sutiation application will carsh bcz of no mod.
+    //error is : Segmentation fault (core dumped)
     const int len = 8;
         float arr[len] =
         {
-             17,13,11,9,7,4,3,2
+             1,1,2,5,6,2,3,3
         };
     for(int i=0;i<=len-1;i++)
         o.data.push(arr[i]);
 
-    o.simpleMode(o.data);
-    printQueue(o.modes);
-    if(o.modes.size() == 0)
-        cout << "these numbers dont have MODE." << endl;
+    o.sortQueue(o.data);
+    o.printQueue(o.data);
+    o.simpleMod(o.data);
 
-
-
-    queue<float> tempD;
-    float arr2[9] =
-            {
-                 15,17,16,14,15,16,18,15,12
-            };
-    for(int i=0;i<=9-1;i++)
-        tempD.push(arr2[i]);
-
-    printQueue(tempD);
-
-    o.simpleMode(tempD);
-    printQueue(o.modes);
-
-
-
-//    float arr3[9] =
-//            {
-//                 67,67,67,65,65,65,63,62,65
-//            };
-
-//    for(int i=0;i<=9-1;i++)
-//        o.data.push(arr3[i]);
-//    o.simpleMode(o.data);
-//    printQueue(o.modes);
 }
 int main()
 {
